@@ -5,7 +5,7 @@ const execute = (input)=>{
         output:"",
         compression: input.compression==true? true:false,
         storedFunctions:[]
-    }
+    } 
     data.arrayed = data.arrayed.filter(v=>v!='' && v!=undefined && v!=null); //Remove undeifned, empty strings and null from the input array
     const getKeyWord = (i)=>{
         return data.arrayed[i];
