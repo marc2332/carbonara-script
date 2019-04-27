@@ -22,6 +22,12 @@ def test()
     lol()
 }
 test()
+
+%%
+
+console.log("Hello JavaScript!")
+
+%%
 ``` 
 will be converted to:
 
@@ -41,4 +47,9 @@ function test (){
     } 
 test ();
 
+%%
+
+console.log("Hello JavaScript!")
+
+%%
 ```

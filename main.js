@@ -8,11 +8,12 @@ Check LICENSE.md
 
 const execute = (input)=>{
     let data = {
-        arrayed :input.code.replace(/(\r\n|\n|\r)/gm," ").split(/\s(?=)|("[\w\s!?()=_-{}]+")/g),
+        arrayed :input.code.replace(/(\r\n|\n|\r)/gm," ").split(/\s|(%%)([\w\s!?()=."`';_-{}]+)(%%)|("[\w\s!?()=."`';_-{}]+")/g),
         current_keyword: null,
         output:"",
         compression: input.compression==true? true:false,
-        storedFunctions:[]
+        storedFunctions:[],
+        storedVariables:[]
     } 
     data.arrayed = data.arrayed.filter(v=>v!='' && v!=undefined && v!=null); //Remove undeifned, empty strings and null from the input array
     const getKeyWord = (i)=>{
@@ -33,11 +34,15 @@ const execute = (input)=>{
         object.arguments = text.match(/(?<=\().*?(?=\))/g)[0];
         return object;
     }
-    const isFunction = (text)=>{
+    const isWhat = (text)=>{
         if(text==undefined) return false;
         let _is;
         for(var i = 0; i<data.storedFunctions.length;i++){
-            if(data.storedFunctions[i]==text.name) _is = true;
+            if(data.storedFunctions[i]==text.name) _is = "function";
+        }
+        if(_is!=undefined) return _is;
+        for(var i = 0; i<data.storedVariables.length;i++){
+            if(data.storedVariables[i]==text) _is = "variable";
         }
         return _is;
     }
@@ -62,7 +67,9 @@ const execute = (input)=>{
                 case "var":
                 case "flex":
                 case "final":
+                data.storedVariables.push(getKeyWord(i+1));
                     data.output+=`${'   '.repeat(openFunctions)} ${getVaribleType(data.current_keyword)} ${getKeyWord(i+1)} = ${getKeyWord(i+3)}; ${data.compression==true? "":"\n"}`;
+                    i++;
                     break;
                 case "def":
                     data.storedFunctions.push(takeArguments(getKeyWord(i+1)).name);
@@ -74,17 +81,24 @@ const execute = (input)=>{
                     data.output+=`${'   '.repeat(openFunctions)}} ${data.compression==true? "":"\n"}`; 
                     openFunctions--; 
                     break;
+                case "%%":
+                    data.output+= getKeyWord(i+1);
+                    i+=2;
+                    break;
                 case "print":
                     data.output += `${'   '.repeat(openFunctions)} console.log(${getKeyWord(i+1)}); ${data.compression==true? "":"\n"}`
                 default: 
-                    if(isFunction(takeArguments(data.current_keyword))){
-                        data.output += `${'   '.repeat(openFunctions)} ${takeArguments(data.current_keyword).name} (${takeArguments(data.current_keyword).arguments});\n`;
+                    if(isWhat(takeArguments(data.current_keyword))=="function"){
+                        data.output += `${'   '.repeat(openFunctions)} ${takeArguments(data.current_keyword).name} (${takeArguments(data.current_keyword).arguments}); ${data.compression==true? "":"\n"}`;
+                    }
+                    if(isWhat(data.current_keyword)=="variable"){
+                        data.output += `${'   '.repeat(openFunctions)} ${data.current_keyword} = ${getKeyWord(i+2)}; ${data.compression==true? "":"\n"}`;
                     }
             }
         }
         openFunctions = data.compression==true? 1:openFunctions;
         if(input.consoleOutput===true){
-            console.log(`\n   <-- Output --> \n\n ${data.output} `);
+            console.log(`\n   <-- Code Output --> \n\n ${data.output} `);
         }
         if(openFunctions>1){
             throwError("Expected }.");
@@ -94,6 +108,7 @@ const execute = (input)=>{
             throwError("Found too many }. ");
             return;
         }
+        console.log(`\n\n   <-- Console Output --> \n\n `);
         eval(data.output)
         return data.output;
     }
@@ -116,8 +131,17 @@ const result = execute({
         lol()
     }
     test()
+
+    var1 : "Hola"
+
+    %%
+
+    console.log("JavaScript from CarbonaraScript!!!");
+
     
+    %%
     `,
-    compression:false,
-    consoleOutput:false
+    compression:true,
+    consoleOutput:true
 });
+
