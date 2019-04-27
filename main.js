@@ -1,3 +1,11 @@
+/*
+
+Copyright 2019 Marc Espín Sanz
+
+Check LICENSE.md 
+
+*/
+
 const execute = (input)=>{
     let data = {
         arrayed :input.code.replace(/(\r\n|\n|\r)/gm," ").split(/\s(?=)|("[\w\s!?()=_-{}]+")/g),
@@ -11,9 +19,10 @@ const execute = (input)=>{
         return data.arrayed[i];
     }
     const throwError = (message)=>{
-        console.error(message);
+        console.error(`CarbonaraScript Error: ${message}`);
     }
     const takeArguments = (text)=>{
+        
         const object ={
             name:"",
             arguments:""
@@ -21,7 +30,7 @@ const execute = (input)=>{
         if(text==undefined) return object;
         if( !text.match(/[()]/g)) return undefined
         object.name = text.match(/([^(]+)/g)[0];
-        object.arguments = text.match(/\((.*?)\)/g)[0];
+        object.arguments = text.match(/(?<=\().*?(?=\))/g)[0];
         return object;
     }
     const isFunction = (text)=>{
@@ -32,19 +41,32 @@ const execute = (input)=>{
         }
         return _is;
     }
-    console.log(data.arrayed)
+    const getVaribleType = (keyword)=>{
+        switch (keyword){
+            case"var":
+                return "var"
+                break;
+            case "final":
+                return "const"
+                break;
+            case "flex":
+                return "let";
+                break;
+        }
+    }
     const output = (_compression)=>{
         let openFunctions=1;
         for(let i=0;i<data.arrayed.length;i++){
             data.current_keyword = getKeyWord(i);
-            openFunctions = data.compression==true? 0:openFunctions;
             switch (data.current_keyword){
-                case "temp":
-                    data.output+=`${'   '.repeat(openFunctions)} const ${getKeyWord(i+1)} = ${getKeyWord(i+3)}; ${data.compression==true? "":"\n"}`;
+                case "var":
+                case "flex":
+                case "final":
+                    data.output+=`${'   '.repeat(openFunctions)} ${getVaribleType(data.current_keyword)} ${getKeyWord(i+1)} = ${getKeyWord(i+3)}; ${data.compression==true? "":"\n"}`;
                     break;
                 case "def":
                     data.storedFunctions.push(takeArguments(getKeyWord(i+1)).name);
-                    data.output+=`${'   '.repeat(openFunctions)} function ${takeArguments(getKeyWord(i+1)).name} ${takeArguments(getKeyWord(i+1)).arguments}{ ${data.compression==true? "":"\n"}`
+                    data.output+=`${'   '.repeat(openFunctions)} function ${takeArguments(getKeyWord(i+1)).name} (${takeArguments(getKeyWord(i+1)).arguments}){ ${data.compression==true? "":"\n"}`
                     i++;
                     openFunctions++;
                     break;
@@ -56,20 +78,21 @@ const execute = (input)=>{
                     data.output += `${'   '.repeat(openFunctions)} console.log(${getKeyWord(i+1)}); ${data.compression==true? "":"\n"}`
                 default: 
                     if(isFunction(takeArguments(data.current_keyword))){
-                        data.output += `${'   '.repeat(openFunctions)} ${takeArguments(data.current_keyword).name} (${takeArguments(getKeyWord(i+1)).arguments});\n`;
+                        data.output += `${'   '.repeat(openFunctions)} ${takeArguments(data.current_keyword).name} (${takeArguments(data.current_keyword).arguments});\n`;
                     }
             }
+        }
+        openFunctions = data.compression==true? 1:openFunctions;
+        if(input.consoleOutput===true){
+            console.log(`\n   <-- Output --> \n\n ${data.output} `);
         }
         if(openFunctions>1){
             throwError("Expected }.");
             return;
         }
         if(openFunctions<1){
-            throwError("Found too many }.");
+            throwError("Found too many }. ");
             return;
-        }
-        if(input.consoleOutput===true){
-            console.log(`\n   <--Result-- > \n\n ${data.output} `);
         }
         eval(data.output)
         return data.output;
@@ -78,29 +101,23 @@ const execute = (input)=>{
 }
 const result = execute({
     code:`
-    temp start : "Hello World!a" 
-    temp bye : "TEST2"
+
+    var var1 : "This is var1" 
+    flex var2 : "This is var2"
+    final var3 : "This is var3"
     
-    def test(x,y,a,h) 
-        temp hello1 : "TEST1" 
-        temp hello2 : "TEST2" 
-        temp hello3 : "TEST3" 
-        def lol(x,v,z) 
-            temp wow : "wooow" 
-            def lol(x,v) 
-                temp wow : "wooow" 
-            }
-        } 
-        print "hi"
-    }
-    print bye,start
+    print var1,"-",var2,"-",var3
 
-    def send(message)
-        print message
+    def test()
+        print "Testing!!"
+        def lol(x,v) 
+            print "loool!"
+        }
+        lol()
     }
-
     test()
+    
     `,
     compression:false,
-    consoleOutput:true
+    consoleOutput:false
 });

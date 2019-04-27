@@ -8,41 +8,37 @@ Exmaple:
 
 
 ``` 
-temp hello : "TEST1" 
-temp bye : "TEST2"
+var var1 : "This is var1" 
+flex var2 : "This is var2"
+final var3 : "This is var3"
 
-def test(x,y) 
-    temp hello1 : "TEST1" 
-    temp hello2 : "TEST2" 
-    temp hello3 : "TEST3" 
-    def lol(x,v,z) 
-        temp wow : "wooow" 
-        def lol(x,v) 
-            temp wow : "wooow" 
-        }
+print var1,"-",var2,"-",var3
+
+def test()
+    print "Testing!!"
+    def lol(x,v) 
+        print "loool!"
     }
-    print "hi"
+    lol()
 }
-print hello
+test()
 ``` 
 will be converted to:
 
 ``` 
-const hello = "TEST1"; 
-const bye = "TEST2"; 
+var var1 = "This is var1"; 
+let var2 = "This is var2"; 
+const var3 = "This is var3";
 
-function test (x,y){
-    const hello1 = "TEST1"; 
-    const hello2 = "TEST2"; 
-    const hello3 = "TEST3"; 
-    function lol (x,v,z){
-        const wow = "wooow"; 
-        function lol (x,v){
-            const wow = "wooow"; 
-        }
-    }
-    console.log("hi");
-}
-console.log(hello);
+console.log(var1,"-",var2,"-",var3); 
+
+function test (){ 
+    console.log("Testing!!"); 
+    function lol (x,v){ 
+        console.log("loool!"); 
+        } 
+    lol ();
+    } 
+test ();
 
 ```
