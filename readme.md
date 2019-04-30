@@ -4,6 +4,6 @@ This is a transcompiled language to javascript.
 
 Just **TESTING**.
 
-Exmaple:
+Playground:  https://marc2332.github.io/carbonara-script/
 
 

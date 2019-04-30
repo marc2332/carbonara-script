@@ -10,6 +10,7 @@
     padding: 7px;
     flex:1;
     height: auto;
+    width: auto;
 }
 .horizontal > p{
     text-align: center
@@ -27,7 +28,6 @@ button{
     transition: 0.1s;
     border-radius: 3px;
 }
-
 button:active{
     border: 0;
     padding: 10px;

@@ -2,6 +2,9 @@
 
 Not all commits are going to be explained here.
 
+### 200430 - 2 [0.0.1]
+- Added info on playground
+- Improvements
 
 ### 200430 - 1 [0.0.1]
 - Added a playground website! (link on readme)
