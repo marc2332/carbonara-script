@@ -7,13 +7,11 @@
     flex-direction: row;
 }
 .horizontal > *{
-    padding: 7px;
     flex:1;
-    height: auto;
     width: auto;
 }
 .horizontal > p{
-    text-align: center
+    text-align: center;
 }
 #carbonara{
 background: gray;

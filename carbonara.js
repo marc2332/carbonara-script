@@ -69,7 +69,7 @@ const execute = (input)=>{
                 case "final":
                 data.storedVariables.push(getKeyWord(i+1));
                     data.output+=`${'   '.repeat(openFunctions)} ${getVaribleType(data.current_keyword)} ${getKeyWord(i+1)} = ${getKeyWord(i+3)}; ${data.compression==true? "":"\n"}`;
-                    i++;
+                    i+=2;
                     break;
                 case "def":
                     data.storedFunctions.push(takeArguments(getKeyWord(i+1)).name);
@@ -92,6 +92,7 @@ const execute = (input)=>{
                         data.output += `${'   '.repeat(openFunctions)} ${takeArguments(data.current_keyword).name} (${takeArguments(data.current_keyword).arguments}); ${data.compression==true? "":"\n"}`;
                     }
                     if(isWhat(data.current_keyword)=="variable"){
+                        if(getKeyWord(i+1)==":")
                         data.output += `${'   '.repeat(openFunctions)} ${data.current_keyword} = ${getKeyWord(i+2)}; ${data.compression==true? "":"\n"}`;
                     }
             }
@@ -114,11 +115,13 @@ const execute = (input)=>{
     return output();
 }
 
+
+//remove above code on production
 const example=`
         var var1 : "This is var1" 
         flex var2 : "This is var2"
         final var3 : "This is var3"
-
+        var2 : "hola"
         print var1,"-",var2,"-",var3
 
         def test()

@@ -2,6 +2,9 @@
 
 Not all commits are going to be explained here.
 
+### 200501 - 1 [0.0.1]
+- Fixed, now you can print variables
+
 ### 200430 - 2 [0.0.1]
 - Added info on playground
 - Improvements
