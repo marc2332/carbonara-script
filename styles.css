@@ -1,0 +1,43 @@
+*{
+    font-family: 'Lato', sans-serif;
+    outline: 0;
+}
+.horizontal{
+    display: flex;
+    flex-direction: row;
+}
+.horizontal > *{
+    padding: 7px;
+    flex:1;
+    height: auto;
+}
+.horizontal > p{
+    text-align: center
+}
+#carbonara{
+background: gray;
+}
+#javascript{
+    background: lightgray;
+}
+button{
+    border: 0;
+    padding: 10px;
+    transform: scale(1);
+    transition: 0.1s;
+    border-radius: 3px;
+}
+
+button:active{
+    border: 0;
+    padding: 10px;
+    transform: scale(0.97);
+    transition: 0.1s;
+}
+.blam{
+    padding: 8px;
+}
+.blam > *{
+    display: inline-block;
+    margin: 5px;
+}

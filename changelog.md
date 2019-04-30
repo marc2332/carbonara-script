@@ -2,6 +2,10 @@
 
 Not all commits are going to be explained here.
 
+
+### 200430 - 1 [0.0.1]
+- Added a playground website! (link on readme)
+
 ### 200428 - 1 [0.0.1]
 - Fixed readme.md
 

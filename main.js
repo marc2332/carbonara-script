@@ -109,39 +109,46 @@ const execute = (input)=>{
             return;
         }
         console.log(`\n\n   <-- Console Output --> \n\n `);
-        eval(data.output)
+        if(input.execute) eval(data.output)
         return data.output;
     }
     return output();
 }
-const result = execute({
-    code:`
 
-    var var1 : "This is var1" 
-    flex var2 : "This is var2"
-    final var3 : "This is var3"
-    
-    print var1,"-",var2,"-",var3
+function convert(){
+    const result = execute({
+        code:document.getElementById("carbonara").innerText,
+        compression:false,
+        consoleOutput:true,
+        execute:false
+    });
+    document.getElementById("javascript").innerText = result;
+}
 
-    def test()
-        print "Testing!!"
-        def lol(x,v) 
-            print "loool!"
-        }
-        lol()
+window.onload = function(){
+    document.getElementById("carbonara").children[0].children[0].innerText =`
+var var1 : "This is var1" 
+flex var2 : "This is var2"
+final var3 : "This is var3"
+
+print var1,"-",var2,"-",var3
+
+def test()
+    print "Testing!!"
+    def lol(x,v) 
+        print "loool!"
     }
-    test()
+    lol()
+}
+test()
 
-    var1 : "Hola"
+var1 : "Hola"
 
-    %%
+%%
 
-    console.log("JavaScript from CarbonaraScript!!!");
+console.log("JavaScript from CarbonaraScript!!!");
 
+%%
     
-    %%
-    `,
-    compression:true,
-    consoleOutput:true
-});
-
+    `
+}
