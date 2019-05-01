@@ -1,16 +1,31 @@
 console.clear();
 function convert(){
     const result = execute({
-        code:document.getElementById("carbonara").innerText,
+        code:carbonara.getValue(),
         compression:false,
         consoleOutput:true,
         execute:true
     });
-    document.getElementById("javascript").innerText = result;
+    javascript.setValue(result);
 }
 
-function exampleLoad(){
-    document.getElementById("carbonara").children[0].children[0].innerText = example;
-}
+let carbonara = CodeMirror(document.getElementById("carbonara"), {
+    value: example,
+    mode: "javascript",
+    htmlMode: false,
+    theme: "default",
+    lineNumbers: true,
+    autoCloseTags: true
+});
+
+let javascript = CodeMirror(document.getElementById("javascript"), {
+value: "",
+mode: "javascript",
+htmlMode: false,
+theme: "default",
+lineNumbers: true,
+autoCloseTags: true
+});
+
 
 

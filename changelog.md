@@ -2,6 +2,13 @@
 
 Not all commits are going to be explained here.
 
+### 200501 - 2 [0.0.1]
+- Improved grammar error detection
+- Bug fixes
+- Now you can redefine a function
+- New design
+- Added highlighting
+
 ### 200501 - 1 [0.0.1]
 - Fixed, now you can print variables
 

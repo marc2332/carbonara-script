@@ -1,32 +1,37 @@
 <html>
     <link href="styles.css" rel="stylesheet" type="text/css" >
-    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Heebo" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>CarbonaraScript</title>
-    <body onload="exampleLoad()">
+    <body >
+        
+        <div class="navbar">
+            <a >Version 0.0.1</a>
+            <a href="https://github.com/marc2332/carbonara-script">Source</a>
+        </div>
         <div class="blam">
             <p>Click to convert</p>
             <button onclick="convert()">RUN</button>
-        </div>
-        <div class="blam">
-            <a >Version 0.0.1</a>
-        </div>
-        <div class="blam">
-            <a href="https://github.com/marc2332/carbonara-script">Source</a>
         </div>
         <div class="horizontal">
                 <p>CarbonaraScript</p>
                 <p>JavaScript</p>
             </div>
         <div class="horizontal">
-            <div contentEditable="true" class="input" id="carbonara">
-                <pre><code></code>
-
-                </code></pre>     
+            <div contentEditable="true" class="input" id="carbonara">   
             </div>
             <div contentEditable="true" class="input" id="javascript"></div>
         </div>
         <script src="carbonara.js"></script>
+        <link rel="stylesheet" href="Highlights/default.css">
+        <script src="lib/codemirror.js"></script>
+        <script src="mode/javascript/javascript.js"></script>
+        <link rel="stylesheet" href="lib/codemirror.css">
+        
         <script src="playground.js"></script>
+        
     </body>
     
 </html>
