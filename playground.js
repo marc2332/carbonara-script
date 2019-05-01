@@ -1,10 +1,12 @@
 console.clear();
+var _executeBool = false;
+var _autoCompileBool = true;
 function convert(){
     const result = execute({
         code:carbonara.getValue(),
         compression:false,
-        consoleOutput:true,
-        execute:true
+        consoleOutput:false,
+        execute:_executeBool
     });
     javascript.setValue(result);
 }
@@ -27,5 +29,28 @@ lineNumbers: true,
 autoCloseTags: true
 });
 
+carbonara.on("change", function() {
+    if(_autoCompileBool){
+        console.clear()
+        convert()
+    }
+});
 
 
+function disableExecute(){
+    if(_executeBool){
+        _executeBool= false
+    }else{
+        _executeBool = true
+    }
+    convert()
+}
+
+function disableAutoCompile(){
+    if(_autoCompileBool){
+        _autoCompileBool= false
+    }else{
+        _autoCompileBool = true
+    }
+    convert()
+}

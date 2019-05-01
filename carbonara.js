@@ -23,13 +23,12 @@ const execute = (input)=>{
         console.error(`Carbonara Error =>\n ${message}`);
     }
     const takeArguments = (text)=>{
-        
         const object ={
             name:"",
-            arguments:""
+            arguments:null
         }
         if(text==undefined) return object;
-        if( !text.match(/[()]/g)) return undefined
+        if( !text.match(/[()]/g)) return object
         object.name = text.match(/([^(]+)/g)[0];
         object.arguments = text.match(/(?<=\().*?(?=\))/g)[0];
         return object;
@@ -67,14 +66,14 @@ const execute = (input)=>{
                 case "var":
                 case "flex":
                 case "final":
-                        if( (getKeyWord(i+2)==":" && data.current_keyword =="final" )||data.current_keyword !="final"  ){
-                            data.storedVariables.push(getKeyWord(i+1));
-                            data.output+=`${'   '.repeat(openFunctions)} ${getVaribleType(data.current_keyword)} ${getKeyWord(i+1)} = ${getKeyWord(i+3)}; ${data.compression==true? "":"\n"}`;
-                            i+=2;
-                        }else{
-                            throwError(`Expected " : " on defining " ${data.current_keyword} " \n Example: ${data.current_keyword} test : "Example"`)
-                            return;
-                        }
+                    if( (getKeyWord(i+2)==":" && data.current_keyword =="final" )||data.current_keyword !="final"  ){
+                        data.storedVariables.push(getKeyWord(i+1));
+                        data.output+=`${'   '.repeat(openFunctions)} ${getVaribleType(data.current_keyword)} ${getKeyWord(i+1)} = ${getKeyWord(i+3)}; ${data.compression==true? "":"\n"}`;
+                        i+=2;
+                    }else{
+                        throwError(`Expected " : " on defining " ${data.current_keyword} " \n Example: ${data.current_keyword} test : "Example"`)
+                        return;
+                    }
                     break;
                 case "def":
                     const name = takeArguments(getKeyWord(i+1)).name;
@@ -95,7 +94,7 @@ const execute = (input)=>{
                     data.output += `${'   '.repeat(openFunctions)} console.log(${getKeyWord(i+1)}); ${data.compression==true? "":"\n"}`
                     break;
                 default: 
-                    if(isWhat(takeArguments(data.current_keyword))=="function"){
+                    if(takeArguments(data.current_keyword).arguments!=null){
                         data.output += `${'   '.repeat(openFunctions)} ${takeArguments(data.current_keyword).name}(${takeArguments(data.current_keyword).arguments}); ${data.compression==true? "":"\n"}`;
                     }
                     if(isWhat(data.current_keyword)=="variable"){ //Redefine the value of a variable
@@ -144,6 +143,7 @@ test()
 console.log("JavaScript from CarbonaraScript!!!");
 %% 
 `
+
 const result = execute({
     code:example,
     compression:false,

@@ -2,6 +2,11 @@
 
 Not all commits are going to be explained here.
 
+### 200501 - 3 [0.0.2]
+- Option to execute and autocompile
+- Now it also autocompiles when you delete code 
+- Carbonara only works on chromium-based browsers or Samsung Browser.
+
 ### 200501 - 2 [0.0.1]
 - Improved grammar error detection
 - Bug fixes

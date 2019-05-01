@@ -8,23 +8,33 @@
     <body >
         
         <div class="navbar">
-            <a >Version 0.0.1</a>
+            <a >Version 0.0.2</a>
             <a href="https://github.com/marc2332/carbonara-script">Source</a>
+            <a >Only works on chromium-based browsers</a>
         </div>
         <div class="blam">
-            <p>Click to convert</p>
-            <button onclick="convert()">RUN</button>
+            <div class="blam">
+                <a>Execute?</a>
+                <input onchange="disableExecute()"  type="checkbox"  >
+            </div>
+            <div class="blam">
+                <a>Auto compile?</a>
+                <input onchange="disableAutoCompile()"  checked type="checkbox"  >
+            </div>
+            <button  onclick="convert()">RUN</button>
         </div>
+        
+        
         <div class="horizontal">
                 <p>CarbonaraScript</p>
                 <p>JavaScript</p>
             </div>
         <div class="horizontal">
-            <div contentEditable="true" class="input" id="carbonara">   
+            <div contentEditable="true"  class="input" id="carbonara">   
             </div>
             <div contentEditable="true" class="input" id="javascript"></div>
         </div>
-        <script src="carbonara.js"></script>
+        <script src="carbonara.js" type="text/javascript"></script>
         <link rel="stylesheet" href="Highlights/default.css">
         <script src="lib/codemirror.js"></script>
         <script src="mode/javascript/javascript.js"></script>

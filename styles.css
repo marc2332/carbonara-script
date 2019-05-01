@@ -21,6 +21,9 @@ html{
     background: #131313;
     cursor: pointer;
 }
+.inputs{
+    height: auto;
+}
 .horizontal > *{
     flex:1;
     width: auto;
