@@ -8,7 +8,7 @@ Check LICENSE.md
 
 const execute = (input)=>{
     let data = {
-        arrayed :input.code.replace(/(\r\n|\n|\r)/gm," ").split(/\s|(%%)([\w\s!?()="<>`[/'.;_-{}]+)(%%)|("[\w\s!?()=.;_-{}]+")/g),
+        arrayed :input.code.replace(/(\r\n|\n|\r)/gm," ").split(/\s|(\/\*)([\w\s!?()="<>`[':.;_-{}]+)(\*\/)|("[\w\s!?():=.;_-{}]+")\s|(%%)([\w\s!?()="<>`['.;_-{}]+)(%%)|("[\w\s!?()=.;_-{}]+")/g),
         current_keyword: null,
         output:"",
         compression: input.compression==true? true:false,
@@ -41,9 +41,16 @@ const execute = (input)=>{
         }
         if(_is!=undefined) return _is;
         for(var i = 0; i<data.storedVariables.length;i++){
-            if(data.storedVariables[i]==text) _is = "variable";
+            if(data.storedVariables[i].name==text) _is = "variable";
         }
         return _is;
+    }
+    const getVariable = (text)=>{
+        let varObj;
+        for(var i = 0; i<data.storedVariables.length;i++){
+            if(data.storedVariables[i].name==text) varObj = data.storedVariables[i];
+        }
+        return varObj;
     }
     const getVaribleType = (keyword)=>{
         switch (keyword){
@@ -67,7 +74,10 @@ const execute = (input)=>{
                 case "flex":
                 case "final":
                     if( (getKeyWord(i+2)==":" && data.current_keyword =="final" )||data.current_keyword !="final"  ){
-                        data.storedVariables.push(getKeyWord(i+1));
+                        data.storedVariables.push({
+                            name:getKeyWord(i+1),
+                            type: data.current_keyword
+                        });
                         data.output+=`${'   '.repeat(openFunctions)} ${getVaribleType(data.current_keyword)} ${getKeyWord(i+1)} = ${getKeyWord(i+3)}; ${data.compression==true? "":"\n"}`;
                         i+=2;
                     }else{
@@ -97,9 +107,14 @@ const execute = (input)=>{
                     if(takeArguments(data.current_keyword).arguments!=null){
                         data.output += `${'   '.repeat(openFunctions)} ${takeArguments(data.current_keyword).name}(${takeArguments(data.current_keyword).arguments}); ${data.compression==true? "":"\n"}`;
                     }
-                    if(isWhat(data.current_keyword)=="variable"){ //Redefine the value of a variable
+                    if(isWhat(data.current_keyword)=="variable"){ //Redefine the value of the variable
                         if(getKeyWord(i+1)==":"){
-                            data.output += `${'   '.repeat(openFunctions)} ${data.current_keyword} = ${getKeyWord(i+2)}; ${data.compression==true? "":"\n"}`;
+                            if(getVariable(data.current_keyword).type=="final"){
+                                throwError(`You can not modify the value of ${getKeyWord(i)}, once it's defined.`)
+                                return;
+                            }else{
+                                data.output += `${'   '.repeat(openFunctions)} ${data.current_keyword} = ${getKeyWord(i+2)}; ${data.compression==true? "":"\n"}`;
+                            }      
                         }
                     }
             }

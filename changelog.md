@@ -2,6 +2,11 @@
 
 Not all commits are going to be explained here.
 
+### 200503 - 1 [0.0.2]
+- Will throw error in case you try to modify a final variable
+- Added changelog button on the page
+- Now you can write comments between /* and */
+
 ### 200501 - 3 [0.0.2]
 - Option to execute and autocompile
 - Now it also autocompiles when you delete code 
