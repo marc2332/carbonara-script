@@ -2,6 +2,11 @@
 
 Not all commits are going to be explained here.
 
+### 200504 - 1 [0.0.2]
+- Deleted old main.js
+- Testing IF conditional
+- Testing "define"
+
 ### 200503 - 1 [0.0.2]
 - Will throw error in case you try to modify a final variable
 - Added changelog button on the page

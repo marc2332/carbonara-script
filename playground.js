@@ -1,4 +1,4 @@
-console.clear();
+//console.clear();
 var _executeBool = false;
 var _autoCompileBool = true;
 function convert(){
