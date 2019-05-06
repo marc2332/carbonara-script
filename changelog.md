@@ -2,6 +2,15 @@
 
 Not all commits are going to be explained here.
 
+### 200506 - 1 [0.0.2]
+- Improved define
+- Added typed variables (string,number & boolean)
+- Errors will be showed on the javascript result (playground)
+
+### 200505 - 1 [0.0.2]
+- Improved if
+- Now you can pass parameters while calling functions
+
 ### 200504 - 1 [0.0.2]
 - Deleted old main.js
 - Testing IF conditional
