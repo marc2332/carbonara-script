@@ -121,7 +121,7 @@ const execute = input => {
         case 'def':
           const name = getKeyWord (i + 1);
           data.storedFunctions.push (name);
-          data.output += `${'   '.repeat (openBrackets)}  ${name} = ${getKeyWord (i + 3)} => { ${data.compression == true ? '' : '\n'}`;
+          data.output += `${'   '.repeat (openBrackets)}  ${name} = ( ${getKeyWord (i + 3)} ) => { ${data.compression == true ? '' : '\n'}`;
           i += 4;
           openBrackets++;
           break;

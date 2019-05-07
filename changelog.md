@@ -2,12 +2,17 @@
 
 Not all commits are going to be explained here.
 
+### 200507 - 1 [0.1.0]
+- v0.1.0
+- Created an npm package!
+
+
 ### 200506 - 1 [0.0.2]
 - Improved define
 - Added typed variables (string,number & boolean)
 - Errors will be showed on the javascript result (playground)
 
-### 200505 - 1 [0.0.2]
+### 200506 - 1 [0.0.2]### 200505 - 1 [0.0.2]
 - Improved if
 - Now you can pass parameters while calling functions
 
