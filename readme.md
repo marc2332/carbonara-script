@@ -6,12 +6,12 @@ Just **TESTING**.
 
 Playground:  https://marc2332.github.io/carbonara-script/
 
-###Installing
+### Installing
 
-> npm install carbonara
+> $ npm install carbonara
 
-###Usage
+### Usage
 
-> npx carbonara --build=file_path
+> $ npx carbonara --build=file_path
 
 

@@ -9,12 +9,13 @@
   ],
   "author": "mkenzo_8 <mespinsanz@gmail.com>",
   "license": "MIT",
+  "readme": "../README.md",
   "dependencies": {
     "chalk": "^2.4.2",
     "fs": "0.0.1-security",
     "optimist": "^0.6.1"
   },
   "bin": {
-    "build": "src/index.js"
+    "build": "index.js"
   }
 }
