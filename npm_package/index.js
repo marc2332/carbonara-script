@@ -203,7 +203,7 @@ fs.readFile(pathIn,"utf8", function read(err, data) {
     console.log(chalk.yellow(" · Transcompiled the code 😎"));
     fs.writeFile(pathOut,result, function(err) {
         if(err)return console.log(err);
-        console.log(chalk.yellow(` · Finished! Output => ${pathOut} 💪`));
+        console.log(chalk.yellow(` · Finished! Output => ${pathOut} 🚀`));
     }); 
 });
 

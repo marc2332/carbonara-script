@@ -2,10 +2,12 @@
 
 Not all commits are going to be explained here.
 
+### 200507 - 1 [0.1.2]
+- Some changes.
+
 ### 200507 - 1 [0.1.0]
 - v0.1.0
 - Created an npm package!
-
 
 ### 200506 - 1 [0.0.2]
 - Improved define

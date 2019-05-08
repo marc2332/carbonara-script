@@ -1,15 +1,15 @@
 {
   "name": "carbonara",
-  "version": "0.1.0",
-  "description": "Transcompiler from Carbonara to Javascriot",
-  "main": "src/index.js",
+  "version": "0.1.2",
+  "description": "Transcompiler from CarbonaraScript to Javascriot",
+  "main": "index.js",
   "scripts": {},
   "keywords": [
     "carbonara-script"
   ],
   "author": "mkenzo_8 <mespinsanz@gmail.com>",
   "license": "MIT",
-  "readme": "../README.md",
+  "readme": "readme.md",
   "dependencies": {
     "chalk": "^2.4.2",
     "fs": "0.0.1-security",

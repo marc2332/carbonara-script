@@ -8,15 +8,11 @@ Just **TESTING**.
 - Cooler syntax
 - .cb is the format extension.
 
-
 Playground:  https://marc2332.github.io/carbonara-script/
 
-### Installing
-
-> $ npm install carbonara
 
 ### Usage
 
-> $ npx carbonara --build=file_path
+> npx carbonara --build=file_path
 
 
