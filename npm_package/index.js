@@ -191,7 +191,6 @@ const execute = input => {
   };
   return output ();
 };
-
 fs.readFile(pathIn,"utf8", function read(err, data) {
     console.log(chalk.yellow(" · Got Data 👌"));
     const result = execute({
@@ -206,5 +205,3 @@ fs.readFile(pathIn,"utf8", function read(err, data) {
         console.log(chalk.yellow(` · Finished! Output => ${pathOut} 🚀`));
     }); 
 });
-
-   

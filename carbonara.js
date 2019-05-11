@@ -16,6 +16,7 @@ const execute = input => {
     current_keyword: null,
     output: '',
     compression: input.compression == true ? true : false,
+    errorsOnPlayground:input.showErrorsOnPlayground,
     storedFunctions: [],
     storedVariables: [],
     storedDefinitions: [],
@@ -28,7 +29,7 @@ const execute = input => {
     return data.arrayed[i];
   };
   const error = message => {
-    data.output += `\n/* ${message}*/\n`;
+    if(data.errorsOnPlayground) data.output += `\n/* ${message}*/\n`;
     console.error (`Carbonara Error =>\n ${message}`);
   };
   const isWhat = text => {
@@ -219,6 +220,7 @@ const result = execute ({
   compression: false,
   consoleOutput: true,
   execute: true,
+  showErrorsOnPlayground:false
 });
 
 

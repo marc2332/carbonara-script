@@ -1,16 +1,7 @@
-*{
-    font-family: 'Heebo', sans-serif;
-    outline: 0;
-    text-decoration: none;
-    color:white
-}
-html{
-    background: #535353;
-}
+
 .horizontal{
     display: flex;
     flex-direction: row;
-    box-shadow: 0px 3px 10px rgba(0,0,0,0.3);
 }
 .navbar * {
     display: inline-block;
@@ -37,27 +28,19 @@ background: #131313;
 #javascript{
     background: #2D2D2D;
 }
-button{
-    border: 0;
-    padding: 10px;
-    transform: scale(1);
-    transition: 0.1s;
-    border-radius: 3px;
-    color: #131313;
-}
-button:hover{
-    background: #CACACA;
-}
-button:active{
-    border: 0;
-    padding: 10px;
-    transform: scale(0.97);
-    transition: 0.1s;
-}
+
 .blam{
     padding: 8px;
 }
 .blam > *{
     display: inline-block;
     margin: 5px;
+}
+*{
+    color:white;
+}
+
+.title2{
+    font-size: 35px;
+    margin: 10px;
 }
