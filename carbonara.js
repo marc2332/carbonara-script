@@ -11,7 +11,7 @@ const execute = input => {
     arrayed: input.code
       .replace (/(\r\n|\n|\r)/gm, ' ')
       .split (
-        /\s|(\<)([\w\s!?="`[,\/*()':&.;_-{}]+)(\>)|\s|(\()([\w\s!?="<>`[,'+:&.;_-{}]+)(\))\s|(\B\$)(\w+)|\s(\/\*)([\w\s!?()="<>`[':.;_-{}]+)(\*\/)|("[\w\s!?():=`.;_-{}]+")\s|(%%)([\w\s!?()="<>`[\/'*,.;_-{}]+)(%%)|("[\w\s!?()='.`;_-{}]+")/g
+        /\s|(\()([\w\s!?="`[<>,\/*':&.;_-{}]+)(\))|\s|(\<)([\w\s!?="`[,\/*()':&.;_-{}]+)(\>)|\s|(\()([\w\s!?="<>`[,'+:&.;_-{}]+)(\))\s|(\B\$)(\w+)|\s(\/\*)([\w\s!?()="<>`[':.;_-{}]+)(\*\/)|("[\w\s!?():=`.;_-{}]+")\s|(%%)([\w\s!?()="+<>`[\/'*,.;_-{}]+)(%%)|("[\w\s!?()='.`;_-{}]+")/g
       ),
     current_keyword: null,
     output: '',
@@ -92,32 +92,44 @@ const execute = input => {
             (data.current_keyword != 'final' &&
               data.current_keyword != 'define')
           ) {
-            data.storedVariables.push ({
-              name: getKeyWord (i + 1),
-              type: data.current_keyword,
-              valueType: getKeyWord (i + 4)=="<"?getKeyWord (i + 5):undefined,
-              value: getKeyWord (i + 3)
-            });
-            data.output += `${'   '.repeat (openBrackets)} ${getVaribleType (data.current_keyword)} ${getKeyWord (i + 1)} = ${getKeyWord (i + 3)}; ${data.compression == true ? '' : '\n'}`;
-            i += getKeyWord (i + 4)!="<"? 2:5;
-          } else {
-            if (data.current_keyword == 'define' && getKeyWord (i + 2) == ':') {
-                if(getKeyWord (i + 3) != '<' && getKeyWord (i + 5) != '>'){
-                    error (
-                        `Expected " < " and " > " on defining " ${getKeyWord(i+1)} " \n Example: ${data.current_keyword} Example : < /*Hello*/>`
-                    );
-                }
-              data.storedDefinitions.push ({
+            if(getKeyWord(i+3) =="("){
+              data.storedVariables.push ({
                 name: getKeyWord (i + 1),
-                value: getKeyWord (i + 4),
+                type: data.current_keyword,
+                valueType: undefined,
+                value: "`"+getKeyWord (i + 4)+"`"
               });
-              i += 3;
-            } else {
-              error (
-                `Expected " : " on defining " ${data.current_keyword} " \n Example: ${data.current_keyword} Example : "Text"`
-              );
+              data.output += `${'   '.repeat (openBrackets)} ${getVaribleType (data.current_keyword)} ${getKeyWord (i + 1)} = ${"`"+getKeyWord (i + 4)+"`"}; ${data.compression == true ? '' : '\n'}`;
+              i += getKeyWord (i + 4)!="<"? 2:5;
+            }else{
+              data.storedVariables.push ({
+                name: getKeyWord (i + 1),
+                type: data.current_keyword,
+                valueType: getKeyWord (i + 4)=="<"?getKeyWord (i + 5):undefined,
+                value: getKeyWord (i + 3)
+              });
+              data.output += `${'   '.repeat (openBrackets)} ${getVaribleType (data.current_keyword)} ${getKeyWord (i + 1)} = ${getKeyWord (i + 3)}; ${data.compression == true ? '' : '\n'}`;
+              i += getKeyWord (i + 4)!="<"? 2:5;
             }
+          } 
+          if (data.current_keyword == 'define' && getKeyWord (i + 2) == ':') {
+            if(getKeyWord (i + 3) != '<' && getKeyWord (i + 5) != '>'){
+                 error (
+                    `Expected " < " and " > " on defining " ${getKeyWord(i+1)} " \n Example: ${data.current_keyword} Example : < /*Hello*/>`
+                );
+             }
+            data.storedDefinitions.push ({
+              name: getKeyWord (i + 1),
+              value: getKeyWord (i + 4),
+            });
+            i += 3;
+          } else if(data.current_variable=="define"){
+            error (
+              `Expected " : " on defining " ${getKeyWord(i+1)} " \n Example: ${data.current_keyword} ${getKeyWord(i+1)} : "Text"`
+            );
           }
+          
+          
           break;
         case 'def':
           const name = getKeyWord (i + 1);
@@ -173,10 +185,15 @@ const execute = input => {
                   error(`Expected <${current_variable.valueType}> as a value type, but found <${current_type}> while modifying value on <${data.current_keyword}>.`)
                 }
               }
+            }else{
+              error (
+                `Expected ":" at redefining ${getKeyWord (i)}.`
+              );
             }
           }
       }
     }
+    console.log(data.storedVariables);
     openBrackets = data.compression == true ? 1 : openBrackets;
     if (input.consoleOutput === true) {
       console.log (`\n   <-- Code Output --> \n\n ${data.output} `);
@@ -213,7 +230,7 @@ $callTest
 %%
 console.log("JavaScript in CarbonaraScript!!!");
 %% 
-
+flex html : (<p>Test</p>)
 `;
 const result = execute ({
   code: example,

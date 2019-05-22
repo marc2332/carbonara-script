@@ -2,6 +2,9 @@
 
 Not all commits are going to be explained here.
 
+### 200512 - 1 [0.1.2]
+- Improved error thrower.
+
 ### 200511 - 1 [0.1.2]
 - Added an option to hide or show errors on results
 - Revamped all the design, no it's using DrebleJS ("framework" made by me)
