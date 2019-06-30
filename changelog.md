@@ -2,6 +2,9 @@
 
 Not all commits are going to be explained here.
 
+### 200630 - 1 [0.1.3]
+- Removed the npm module
+
 ### 200512 - 1 [0.1.2]
 - Improved error thrower.
 

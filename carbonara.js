@@ -57,27 +57,12 @@ const execute = input => {
     return varObj;
   };
   const getVariableValueType = value => {
-    if(isNaN(Number (value))==false){
-      return "number";
-    }
-    if(value == "true" ||value == "false" ){
-      return "boolean";
-    }
+    if(typeof value =="object" || value =="null") return null
+    if(value =="undefined" ) return undefined;
+    if(isNaN(Number (value))==false) return "number";
+    if(value === "true" || value === "false" ) return "boolean";
     return "string";
   }
-  const getVaribleType = keyword => {
-    switch (keyword) {
-      case 'var':
-        return 'var';
-        break;
-      case 'final':
-        return 'const';
-        break;
-      case 'flex':
-        return 'let';
-        break;
-    }
-  };
   const output = _compression => {
     let openBrackets = 1;
     for (let i = 0; i < data.arrayed.length; i++) {
@@ -85,10 +70,10 @@ const execute = input => {
       switch (data.current_keyword) {
         case 'define':
         case 'var':
-        case 'flex':
-        case 'final':
+        case 'let':
+        case 'const':
           if (
-            (getKeyWord (i + 2) == ':' && data.current_keyword == 'final') ||
+            (getKeyWord (i + 2) == '=' && data.current_keyword == 'final') ||
             (data.current_keyword != 'final' &&
               data.current_keyword != 'define')
           ) {
@@ -99,20 +84,20 @@ const execute = input => {
                 valueType: undefined,
                 value: "`"+getKeyWord (i + 4)+"`"
               });
-              data.output += `${'   '.repeat (openBrackets)} ${getVaribleType (data.current_keyword)} ${getKeyWord (i + 1)} = ${"`"+getKeyWord (i + 4)+"`"}; ${data.compression == true ? '' : '\n'}`;
+              data.output += `${'   '.repeat (openBrackets)} ${data.current_keyword} ${getKeyWord (i + 1)} = ${"`"+getKeyWord (i + 4)+"`"}; ${data.compression == true ? '' : '\n'}`;
               i += getKeyWord (i + 4)!="<"? 2:5;
             }else{
               data.storedVariables.push ({
                 name: getKeyWord (i + 1),
                 type: data.current_keyword,
-                valueType: getKeyWord (i + 4)=="<"?getKeyWord (i + 5):undefined,
+                valueType: getKeyWord (i + 4)=="<"?getKeyWord (i + 5)=="value"?getVariableValueType(getKeyWord (i + 3)):getKeyWord (i + 5):undefined,
                 value: getKeyWord (i + 3)
               });
-              data.output += `${'   '.repeat (openBrackets)} ${getVaribleType (data.current_keyword)} ${getKeyWord (i + 1)} = ${getKeyWord (i + 3)}; ${data.compression == true ? '' : '\n'}`;
+              data.output += `${'   '.repeat (openBrackets)} ${data.current_keyword} ${getKeyWord (i + 1)} = ${getKeyWord (i + 3)}; ${data.compression == true ? '' : '\n'}`;
               i += getKeyWord (i + 4)!="<"? 2:5;
             }
           } 
-          if (data.current_keyword == 'define' && getKeyWord (i + 2) == ':') {
+          if (data.current_keyword == 'define' && getKeyWord (i + 2) == '=') {
             if(getKeyWord (i + 3) != '<' && getKeyWord (i + 5) != '>'){
                  error (
                     `Expected " < " and " > " on defining " ${getKeyWord(i+1)} " \n Example: ${data.current_keyword} Example : < /*Hello*/>`
@@ -128,10 +113,8 @@ const execute = input => {
               `Expected " : " on defining " ${getKeyWord(i+1)} " \n Example: ${data.current_keyword} ${getKeyWord(i+1)} : "Text"`
             );
           }
-          
-          
           break;
-        case 'def':
+        case 'function':
           const name = getKeyWord (i + 1);
           data.storedFunctions.push (name);
           data.output += `${'   '.repeat (openBrackets)}  ${name} = ( ${getKeyWord (i + 3)} ) => { ${data.compression == true ? '' : '\n'}`;
@@ -171,9 +154,9 @@ const execute = input => {
           }
           if (isWhat (data.current_keyword) == 'variable') {
             //Redefine the value of the variable
-            if (getKeyWord (i + 1) == ':') {
+            if (getKeyWord (i + 1) == '=') {
               const current_variable =  getVariable (data.current_keyword);
-              if (current_variable.type == 'final') {
+              if (current_variable.type == 'const') {
                 error (
                   `You cannot modify the value of ${getKeyWord (i)}, once it's defined.`
                 );
@@ -187,13 +170,13 @@ const execute = input => {
               }
             }else{
               error (
-                `Expected ":" at redefining ${getKeyWord (i)}.`
+                `Expected "=" at redefining ${getKeyWord (i)}.`
               );
             }
           }
       }
     }
-    console.log(data.storedVariables);
+    console.log(data);
     openBrackets = data.compression == true ? 1 : openBrackets;
     if (input.consoleOutput === true) {
       console.log (`\n   <-- Code Output --> \n\n ${data.output} `);
@@ -210,18 +193,18 @@ const execute = input => {
   return output ();
 };
 //remove above code on production
-const example = ` 
-define callTest : < test() >
-var var1 : "This is var1" 
-flex var2 : "This is var2" <string>/*Only allows strings */
-final var3 : "This is var3"
+const example = `
+define callTest = < test() >
+var var1 = "This is var1" 
+let var2 = "This is var2" <string>/*Only allows strings */
+const var3 = "This is var3"
 
-var bool : true <boolean> /*Only allows true or false */
-var2 : "Var2"
+var bool = true <boolean> /*Only allows true or false */
+var2 = "Var2"
 
 print var1,"-",var2,"-",var3
 
-def test( )
+function test( )
 	if(true===true && 2 == 2)
 		print "hola"
 	}
@@ -230,7 +213,7 @@ $callTest
 %%
 console.log("JavaScript in CarbonaraScript!!!");
 %% 
-flex html : (<p>Test</p>)
+let html = (<p>Test</p>)
 `;
 const result = execute ({
   code: example,

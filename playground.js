@@ -1,4 +1,4 @@
-console.clear();
+//console.clear();
 
 const HomeAct = new activity({name:"Home",code:`
 
@@ -93,7 +93,9 @@ let carbonara = CodeMirror(document.getElementById("carbonara"), {
     htmlMode: false,
     theme: "default",
     lineNumbers: true,
-    autoCloseTags: true
+    autoCloseTags: true,
+    indentUnits:2,
+    stleActiveLine:true
 });
 
 let javascript = CodeMirror(document.getElementById("javascript"), {
