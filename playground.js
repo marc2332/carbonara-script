@@ -2,13 +2,13 @@
 
 const HomeAct = new activity({name:"Home",code:`
 
-    <d-navbar position="top" content="left"> 
+    <d-navbar position="top" content="left">
         <d-tabs class="ripple" >Home</d-tabs>
         <d-tabs class="ripple" onclick="openAboutAct()">About</d-tabs>
-    </d-navbar>	
-    <d-content>	
+    </d-navbar>
+    <d-content>
     <div class="card">
-        <p>Only works on chromium-base browsers</p>
+        <p>Carbonara Playground</p>
         <i class="spacer"></i>
         <div class="blam">
             <div class="blam">
@@ -26,7 +26,7 @@ const HomeAct = new activity({name:"Home",code:`
             <button class="ripple" onclick="convert()">RUN</button>
         </div>
     </div>
-		
+
         <div class="card">
             <div class="horizontal">
                 <div contentEditable="true"  class="input" id="carbonara"></div>
@@ -46,7 +46,7 @@ const colors = {
     RippleEffect : 'rgba(255,255,255,0.6)'
 }
 newTheme(colors)
-setTheme("main");	
+setTheme("main");
 load({
     home: HomeAct
 });
@@ -54,10 +54,10 @@ load({
 function openAboutAct(){
 	const aboutAct = new activity({name:"about",code:`
 
-			
+
 			<d-navbar position="top">
 					<img class="navbar-icon" onclick="closeActivity('slide_down')" src="arrow_back.svg"></img>
-					<navbar-title> About Carbonara <navbar-title>
+					<d-title> About Carbonara <d-title>
 			</d-navbar>
             <d-content>
                 <div content="center">

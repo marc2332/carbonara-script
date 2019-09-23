@@ -1,4 +1,6 @@
-
+.CodeMirror{
+  z-index: 0;
+}
 .horizontal{
     display: flex;
     flex-direction: row;

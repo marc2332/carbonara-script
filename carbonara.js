@@ -2,16 +2,15 @@
 
 Copyright 2019 Marc Espín Sanz
 
-Check LICENSE.md 
+Check LICENSE.md
 
 */
 
 const execute = input => {
   let data = {
     arrayed: input.code
-      .replace (/(\r\n|\n|\r)/gm, ' ')
       .split (
-        /\s|(\()([\w\s!?="`[<>,\/*':&.;_-{}]+)(\))|\s|(\<)([\w\s!?="`[,\/*()':&.;_-{}]+)(\>)|\s|(\()([\w\s!?="<>`[,'+:&.;_-{}]+)(\))\s|(\B\$)(\w+)|\s(\/\*)([\w\s!?()="<>`[':.;_-{}]+)(\*\/)|("[\w\s!?():=`.;_-{}]+")\s|(%%)([\w\s!?()="+<>`[\/'*,.;_-{}]+)(%%)|("[\w\s!?()='.`;_-{}]+")/g
+        /\s|(\()([\w\s+!?="`[<>,\/*':&.`$;_-{}]+)(\))|\s|(\<)([\w\s!?="`[,\/*()':&.;_-{}]+)(\>)|\s|(\()([\w\s!?="<>`[,'+:&.;_-{}]+)(\))\s|(\B\$)(\w+)|\s(\/\*)([\w\s!?()="<>`[':.;_-{}]+)(\*\/)|("[\w\s!?():=`.;_-{}]+")\s|(%%)([\w\s!?()="+<>`[\/'*,$.;_-{}]+)(%%)|("[\w\s!?()='.`;_-{}]+")/g
       ),
     current_keyword: null,
     output: '',
@@ -22,8 +21,8 @@ const execute = input => {
     storedDefinitions: [],
   };
   data.arrayed = data.arrayed.filter (
-    v => v != '' && v != undefined && v != null
-  ); //Remove undeifned, empty strings and null from the input array
+  Boolean
+); //Remove undefined, empty strings and null from the input array
   //console.log (data.arrayed);
   const getKeyWord = i => {
     return data.arrayed[i];
@@ -64,6 +63,7 @@ const execute = input => {
     return "string";
   }
   const output = _compression => {
+    let arguments_length = 0;
     let openBrackets = 1;
     for (let i = 0; i < data.arrayed.length; i++) {
       data.current_keyword = getKeyWord (i);
@@ -77,6 +77,7 @@ const execute = input => {
             (data.current_keyword != 'final' &&
               data.current_keyword != 'define')
           ) {
+            arguments_length = 3;
             if(getKeyWord(i+3) =="("){
               data.storedVariables.push ({
                 name: getKeyWord (i + 1),
@@ -84,33 +85,39 @@ const execute = input => {
                 valueType: undefined,
                 value: "`"+getKeyWord (i + 4)+"`"
               });
+              arguments_length = 0;
               data.output += `${'   '.repeat (openBrackets)} ${data.current_keyword} ${getKeyWord (i + 1)} = ${"`"+getKeyWord (i + 4)+"`"}; ${data.compression == true ? '' : '\n'}`;
-              i += getKeyWord (i + 4)!="<"? 2:5;
+              i += 6;
             }else{
+
               data.storedVariables.push ({
                 name: getKeyWord (i + 1),
                 type: data.current_keyword,
                 valueType: getKeyWord (i + 4)=="<"?getKeyWord (i + 5)=="value"?getVariableValueType(getKeyWord (i + 3)):getKeyWord (i + 5):undefined,
                 value: getKeyWord (i + 3)
               });
+                arguments_length = 0;
               data.output += `${'   '.repeat (openBrackets)} ${data.current_keyword} ${getKeyWord (i + 1)} = ${getKeyWord (i + 3)}; ${data.compression == true ? '' : '\n'}`;
-              i += getKeyWord (i + 4)!="<"? 2:5;
+              i += getKeyWord (i + 4)!="<"? 3:6;
             }
-          } 
+          }
           if (data.current_keyword == 'define' && getKeyWord (i + 2) == '=') {
+            arguments_length = 4;
             if(getKeyWord (i + 3) != '<' && getKeyWord (i + 5) != '>'){
                  error (
                     `Expected " < " and " > " on defining " ${getKeyWord(i+1)} " \n Example: ${data.current_keyword} Example : < /*Hello*/>`
                 );
              }
+
             data.storedDefinitions.push ({
               name: getKeyWord (i + 1),
               value: getKeyWord (i + 4),
             });
-            i += 3;
+            arguments_length = 0;
+            i += 5;
           } else if(data.current_variable=="define"){
             error (
-              `Expected " : " on defining " ${getKeyWord(i+1)} " \n Example: ${data.current_keyword} ${getKeyWord(i+1)} : "Text"`
+              `Expected " = " on defining " ${getKeyWord(i+1)} " \n Example: ${data.current_keyword} Example : < /*Hello*/>`
             );
           }
           break;
@@ -118,7 +125,7 @@ const execute = input => {
           const name = getKeyWord (i + 1);
           data.storedFunctions.push (name);
           data.output += `${'   '.repeat (openBrackets)} let  ${name} = ( ${getKeyWord (i + 3)} ) => { ${data.compression == true ? '' : '\n'}`;
-          i += 4;
+          i += 2;
           openBrackets++;
           break;
         case 'if':
@@ -130,7 +137,8 @@ const execute = input => {
           if (isWhat (getKeyWord (i + 1)) == 'definition') {
             for (var a = 0; a < data.storedDefinitions.length; a++) {
               if (data.storedDefinitions[a].name == getKeyWord (i + 1)) {
-                data.output += `${'   '.repeat (openBrackets)}${data.storedDefinitions[a].value}\n`;
+                data.output += `${data.storedDefinitions[a].value}${getKeyWord (i + 2) !="$"? "\n":""}`;
+                i+=1
               }
             }
           }
@@ -151,8 +159,7 @@ const execute = input => {
           if (isWhat (data.current_keyword) == 'function') {
             data.output += `${'   '.repeat (openBrackets)} ${data.current_keyword}(${getKeyWord (i + 2)}); ${data.compression == true ? '' : '\n'}`;
             i += 3;
-          }
-          if (isWhat (data.current_keyword) == 'variable') {
+          }else if(isWhat (data.current_keyword) == 'variable') {
             //Redefine the value of the variable
             if (getKeyWord (i + 1) == '=') {
               const current_variable =  getVariable (data.current_keyword);
@@ -173,10 +180,12 @@ const execute = input => {
                 `Expected "=" at redefining ${getKeyWord (i)}.`
               );
             }
+              i += 2;
+          }else if(arguments_length===0){
+            data.output += data.current_keyword;
           }
       }
     }
-    console.log(data);
     openBrackets = data.compression == true ? 1 : openBrackets;
     if (input.consoleOutput === true) {
       console.log (`\n   <-- Code Output --> \n\n ${data.output} `);
@@ -187,6 +196,7 @@ const execute = input => {
     if (openBrackets < 1) {
       error ('Found too many }. ');
     }
+    console.log(input)
     if (input.execute) eval (data.output);
     return data.output;
   };
@@ -195,7 +205,7 @@ const execute = input => {
 //remove above code on production
 const example = `
 define callTest = < test() >
-var var1 = "This is var1" 
+var var1 = "This is var1"
 let var2 = "This is var2" <string>/*Only allows strings */
 const var3 = "This is var3"
 
@@ -212,7 +222,7 @@ function test( )
 $callTest
 %%
 console.log("JavaScript in CarbonaraScript!!!");
-%% 
+%%
 let html = (<p>Test</p>)
 `;
 const result = execute ({
@@ -223,4 +233,47 @@ const result = execute ({
   showErrorsOnPlayground:false
 });
 
+/*
 
+define e = <console>
+define ee = <.>
+define eee = <log>
+define eeee = <(>
+define eeeee = <"oh no">
+define eeeeee = <)>
+define eeeeeee = <;>
+define eeeeeeee = < if >
+
+$e $ee $eee $eeee $eeeee $eeeeee $eeeeeee
+
+
+function hola() {
+ print "hola"
+  %%
+
+   console.log("hola");
+
+   %%
+}
+
+
+var result = "test"
+let i = 5
+
+
+if(result === "test")
+	for(i=0;i<[0,1].length;i++){
+    	print i
+  	}
+}
+
+if(result !== true)
+	const result_text = (  Result is " ${result} "  )
+
+    %%console.log(result_text)%%
+}
+
+
+
+
+*/
