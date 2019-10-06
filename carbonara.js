@@ -125,7 +125,7 @@ const execute = input => {
           const name = getKeyWord (i + 1);
           data.storedFunctions.push (name);
           data.output += `${'   '.repeat (openBrackets)} let  ${name} = ( ${getKeyWord (i + 3)} ) => { ${data.compression == true ? '' : '\n'}`;
-          i += 2;
+          i += 5;
           openBrackets++;
           break;
         case 'if':
@@ -182,7 +182,8 @@ const execute = input => {
             }
               i += 2;
           }else if(arguments_length===0){
-            data.output += data.current_keyword;
+            console.log(getKeyWord(i))
+            data.output += getKeyWord(i);
           }
       }
     }

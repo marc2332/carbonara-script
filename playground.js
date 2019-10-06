@@ -109,7 +109,7 @@ autoCloseTags: true
 
 carbonara.on("change", function() {
     if(_autoCompileBool){
-        console.clear()
+        //console.clear()
         convert()
     }
 });
