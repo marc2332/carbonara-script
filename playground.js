@@ -8,7 +8,6 @@ const HomeAct = new activity({name:"Home",code:`
     </d-navbar>
     <d-content>
     <div class="card">
-        <p>Carbonara Playground</p>
         <i class="spacer"></i>
         <div class="blam">
             <div class="blam">
@@ -62,7 +61,7 @@ function openAboutAct(){
             <d-content>
                 <div content="center">
                     <p class="title2">CarbonaraScript</p>
-                    <p> Version 0.1.2</p>
+                    <p> Version 0.1.4</p>
                     <button class="ripple" onclick="window.open('https://github.com/marc2332/carbonara-script')">Source</button>
                     <button class="ripple" onclick="window.open('https://github.com/marc2332/carbonara-script/blob/master/changelog.md')">Changelog</button>
                 </div>
@@ -99,17 +98,17 @@ let carbonara = CodeMirror(document.getElementById("carbonara"), {
 });
 
 let javascript = CodeMirror(document.getElementById("javascript"), {
-value: "",
-mode: "javascript",
-htmlMode: false,
-theme: "default",
-lineNumbers: true,
-autoCloseTags: true
+  value: "",
+  mode: "javascript",
+  htmlMode: false,
+  theme: "default",
+  lineNumbers: true,
+  autoCloseTags: true
 });
 
 carbonara.on("change", function() {
     if(_autoCompileBool){
-        //console.clear()
+        console.clear()
         convert()
     }
 });

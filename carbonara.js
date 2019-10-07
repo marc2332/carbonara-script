@@ -269,8 +269,6 @@ if(result === "test")
 }
 
 if(result !== true)
-	const result_text = (  Result is " ${result} "  )
-
     %%console.log(result_text)%%
 }
 

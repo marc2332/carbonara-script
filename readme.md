@@ -1,13 +1,10 @@
-# Carbonara Script
+# CarbonaraScript
 
-This is a transcompiled language to javascript.
+This is side-project, a transcompiled language to javascript.
 
-Just **TESTING**.
-### Some keywords:
+## Some Highlights:
 - Typed variables
-- Cooler syntax
-- .cb is the format extension.
-
+- Define keyword
 
 Playground:  https://marc2332.github.io/carbonara-script/
 
@@ -18,5 +15,3 @@ Playground:  https://marc2332.github.io/carbonara-script/
 ### Usage
 
 > $ npx carbonara --build=file_path
-
-
